@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { EmptyState, Layout, Page } from "@shopify/polaris";
 import { ResourcePicker } from "@shopify/app-bridge-react";
 import store from "store-js";
+import ProductList from "../components/ProductList";
 
-const Index = () => {
+const Index = ({ client }) => {
   const [modal, setModal] = useState({ open: false });
   const emptyState = !store.get("ids");
   const handleSelection = (resources) => {
-    const ids = resources.selection.map((product) => product.id);
+    const resourceIds = resources.selection.map((product) => product.id);
     setModal({ open: false });
-    store.set("ids", ids);
+    store.set("ids", resourceIds);
     console.log("this is product ids", store.get("ids"));
   };
   return (
@@ -23,18 +24,23 @@ const Index = () => {
         }}
         onSelection={(resources) => handleSelection(resources)}
       />
-      <Layout>
-        <EmptyState
-          heading="Create your featured products"
-          action={{
-            content: "Add Product",
-            onAction: () => setModal({ open: true }),
-          }}
-          image="https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg"
-        >
-          <p>Add products to get started</p>
-        </EmptyState>
-      </Layout>
+
+      {emptyState ? (
+        <Layout>
+          <EmptyState
+            heading="Create your featured products"
+            action={{
+              content: "Add Product",
+              onAction: () => setModal({ open: true }),
+            }}
+            image="https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg"
+          >
+            <p>Add products to get started</p>
+          </EmptyState>
+        </Layout>
+      ) : (
+        <ProductList />
+      )}
     </Page>
   );
 };
