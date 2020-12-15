@@ -4,7 +4,7 @@ import { ResourcePicker } from "@shopify/app-bridge-react";
 import store from "store-js";
 import ProductList from "../components/ProductList";
 
-const Index = ({ client }) => {
+const Index = () => {
   const [modal, setModal] = useState({ open: false });
   const emptyState = !store.get("ids");
   const handleSelection = (resources) => {
@@ -39,7 +39,7 @@ const Index = ({ client }) => {
           </EmptyState>
         </Layout>
       ) : (
-        <ProductList />
+        <ProductList emptyState={emptyState} />
       )}
     </Page>
   );
